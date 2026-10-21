@@ -1,0 +1,163 @@
+:root {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    color: #f2ede0;
+    background: #0c0b09;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    /* Arte Maestro — paleta base */
+    --color-black: #0c0b09;
+
+    --color-graphite: #1a1815;
+    --color-graphite-2: #242019;
+    --color-graphite-3: #2e281f;
+
+    --color-wood: #b9834c;
+
+    --color-gold: #d7a94a;
+    --color-gold-dim: #c99a3d;
+
+    --color-olive: #454a30;
+    --color-olive-2: #565c3c;
+
+    --color-beige: #e9e1cb;
+    --color-beige-2: #d8cdae;
+
+    --color-cream: #f4efe1;
+
+    --color-text: #f2ede0;
+    --color-muted: #a79d87;
+    --color-ink: #171512;
+
+    /* Colores auxiliares del prototipo */
+    --color-panel-text: #5a5648;
+    --color-dashed: #b9b3a0;
+    --color-success: #3a5a2e;
+    --color-danger: #a13333;
+
+    /* Backgrounds del lenguaje visual */
+    --color-hero-top: #100e0b;
+    --color-hero-middle: #16130f;
+    --color-deep-brown: #14110d;
+    --color-warm-brown: #3a2f22;
+
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --border-gold: rgba(215, 169, 74, 0.25);
+
+    --page-padding: 5vw;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    background: var(--color-black);
+    color: var(--color-text);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font-family: 'Inter', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+.display-font {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+}
+
+.eyebrow {
+    color: var(--color-gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 0;
+    padding: 12px 22px;
+
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.06rem;
+    text-transform: uppercase;
+
+    transition:
+        background 180ms ease,
+        color 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn--gold {
+    background: var(--color-gold);
+    color: var(--color-ink);
+}
+
+.btn--gold:hover {
+    background: var(--color-cream);
+}
+
+.btn--outline {
+    border: 1px solid var(--color-muted);
+    background: transparent;
+    color: var(--color-text);
+}
+
+.btn--outline:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}

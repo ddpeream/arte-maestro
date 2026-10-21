@@ -1,0 +1,155 @@
+.artists-page {
+    min-height: 80vh;
+}
+
+.artists-page__header {
+    padding: 100px var(--page-padding) 60px;
+
+    background:
+        radial-gradient(circle at 80% 20%,
+            rgba(215, 169, 74, 0.14),
+            transparent 38%),
+        var(--color-black);
+}
+
+.artists-page__header h1 {
+    margin: 12px 0;
+
+    font-size: clamp(4rem, 9vw, 9rem);
+    line-height: 0.9;
+}
+
+.artists-page__header p {
+    max-width: 610px;
+
+    color: var(--color-muted);
+
+    line-height: 1.75;
+}
+
+.artists-grid {
+    padding: 20px var(--page-padding) 100px;
+}
+
+.artist-card {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.9fr) 1.1fr;
+
+    max-width: 1100px;
+
+    border: 1px solid var(--border-soft);
+
+    background: var(--color-graphite-2);
+}
+
+.artist-card__visual {
+    position: relative;
+
+    min-height: 440px;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 30px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 70% 20%,
+            rgba(215, 169, 74, 0.3),
+            transparent 50%),
+        linear-gradient(155deg,
+            var(--color-warm-brown),
+            var(--color-olive),
+            var(--color-deep-brown));
+}
+
+.artist-card__index {
+    position: absolute;
+
+    top: 20px;
+    right: 25px;
+
+    color: rgba(255, 255, 255, 0.11);
+
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 7rem;
+}
+
+.artist-card__visual-info {
+    position: relative;
+    z-index: 2;
+}
+
+.artist-card__visual-info span {
+    display: block;
+
+    color: var(--color-gold);
+
+    font-size: 0.65rem;
+    text-transform: uppercase;
+}
+
+.artist-card__visual-info strong {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+}
+
+.artist-card__body {
+    padding: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.artist-card__body h2 {
+    margin: 10px 0 15px;
+
+    font-size: clamp(2.6rem, 5vw, 5rem);
+    text-transform: uppercase;
+}
+
+.artist-card__body>p {
+    max-width: 600px;
+
+    color: var(--color-muted);
+
+    line-height: 1.75;
+}
+
+.artist-card__genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin: 15px 0 28px;
+}
+
+.artist-card__genres span {
+    border: 1px solid var(--color-muted);
+
+    padding: 5px 9px;
+
+    font-size: 0.6rem;
+    text-transform: uppercase;
+}
+
+.artist-card__body>a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: fit-content;
+
+    color: var(--color-gold);
+
+    font-weight: 800;
+}
+
+@media (max-width: 800px) {
+    .artist-card {
+        grid-template-columns: 1fr;
+    }
+}

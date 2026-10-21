@@ -1,0 +1,25 @@
+.public-layout {
+    min-height: 100vh;
+
+    background: var(--color-black);
+}
+
+.arte-maestro-grain {
+    position: fixed;
+    inset: 0;
+
+    z-index: 900;
+
+    pointer-events: none;
+
+    opacity: 0.038;
+    mix-blend-mode: overlay;
+
+    background-image:
+        repeating-linear-gradient(0deg,
+            #fff 0 1px,
+            transparent 1px 3px),
+        repeating-linear-gradient(90deg,
+            #fff 0 1px,
+            transparent 1px 3px);
+}

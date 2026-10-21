@@ -1,0 +1,32 @@
+.arte-maestro-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+    padding: 36px var(--page-padding);
+
+    border-top: 1px solid var(--border-soft);
+
+    color: var(--color-muted);
+
+    font-size: 0.68rem;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+.arte-maestro-footer__manifesto {
+    display: flex;
+    gap: 10px;
+}
+
+.arte-maestro-footer__admin {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.arte-maestro-footer__admin:hover {
+    color: var(--color-gold);
+}

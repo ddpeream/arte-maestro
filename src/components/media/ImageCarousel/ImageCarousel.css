@@ -1,0 +1,86 @@
+.image-carousel {
+    min-width: 0;
+    --swiper-theme-color: var(--color-gold);
+    --swiper-navigation-size: 18px;
+}
+
+.image-carousel__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.image-carousel__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-gold);
+    background: transparent;
+    color: var(--color-gold);
+}
+
+.image-carousel .swiper {
+    padding-bottom: 38px;
+}
+
+.image-carousel .swiper-slide {
+    height: auto;
+}
+
+.image-carousel__slide {
+    height: 100%;
+    margin: 0;
+    border: 1px solid var(--border-soft);
+    background: var(--color-graphite);
+}
+
+.image-carousel__frame {
+    aspect-ratio: 4 / 3;
+    background: var(--color-black);
+}
+
+.image-carousel--artist .image-carousel__frame {
+    aspect-ratio: 3 / 2;
+}
+
+.image-carousel__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.image-carousel figcaption {
+    padding: 14px 18px;
+    color: var(--color-beige-2);
+    font-size: 0.8rem;
+}
+
+.image-carousel figcaption a:hover {
+    color: var(--color-gold);
+}
+
+.image-carousel .swiper-button-prev,
+.image-carousel .swiper-button-next {
+    width: 44px;
+    height: 44px;
+    top: calc(50% - 30px);
+    border: 1px solid var(--border-gold);
+    background: rgba(12, 11, 9, 0.88);
+}
+
+.image-carousel .swiper-pagination {
+    bottom: 0;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+}
+
+.image-carousel button:focus-visible,
+.image-carousel a:focus-visible,
+.image-carousel .swiper-button-prev:focus-visible,
+.image-carousel .swiper-button-next:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+}
