@@ -5,6 +5,7 @@ import {
   createArtist,
   publishArtist,
   updateArtist,
+  restoreArtist,
 } from "./artistsService";
 
 // Crea un artista y refresca las consultas de artistas.
@@ -55,6 +56,21 @@ export function useArchiveArtistMutation() {
 
   return useMutation({
     mutationFn: archiveArtist,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["artists"],
+      });
+    },
+  });
+}
+
+// Recupera un artista archivado y actualiza los listados relacionados.
+export function useRestoreArtistMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: restoreArtist,
+
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["artists"],

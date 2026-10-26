@@ -64,6 +64,12 @@
             var(--color-deep-brown));
 }
 
+.artist-card__visual--with-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .artist-card__index {
     position: absolute;
 

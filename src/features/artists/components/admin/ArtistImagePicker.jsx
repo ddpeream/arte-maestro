@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 // Selecciona, valida y previsualiza una imagen del artista.
-function ArtistImagePicker({ label, file, onChange }) {
+// Si no hay archivo nuevo, puede mostrar la imagen actualmente guardada.
+function ArtistImagePicker({ label, file, currentUrl = "", onChange }) {
   const [preview, setPreview] = useState("");
 
-  // Genera y libera la URL temporal de vista previa.
+  // Genera una URL temporal cuando el usuario selecciona
+  // una imagen nueva y la libera al reemplazarla o desmontar.
   useEffect(() => {
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     const url = URL.createObjectURL(file);
 
@@ -23,11 +28,16 @@ function ArtistImagePicker({ label, file, onChange }) {
     };
   }, [file]);
 
-  // Valida el formato y tamaño de la imagen seleccionada.
+  // La imagen nueva tiene prioridad sobre la ya guardada.
+  const displayUrl = preview || currentUrl;
+
+  // Valida formato y tamaño antes de entregar el archivo al formulario.
   function selectFile(event) {
     const selected = event.target.files?.[0];
 
-    if (!selected) return;
+    if (!selected) {
+      return;
+    }
 
     if (
       !ALLOWED_IMAGE_TYPES.includes(selected.type) ||
@@ -49,7 +59,11 @@ function ArtistImagePicker({ label, file, onChange }) {
 
       <div className="image-field">
         <div className="image-field__preview">
-          {preview ? <img src={preview} alt="Vista previa" /> : "Sin imagen"}
+          {displayUrl ? (
+            <img src={displayUrl} alt={`${label} — vista previa`} />
+          ) : (
+            "Sin imagen"
+          )}
         </div>
 
         <div className="image-field__controls">

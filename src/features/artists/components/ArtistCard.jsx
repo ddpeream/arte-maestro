@@ -6,9 +6,24 @@ function ArtistCard({ artist, index }) {
   const foundedYear = artist.founded_year ?? artist.founded;
   const description = artist.short_description ?? artist.shortDescription;
 
+  // La imagen destacada tiene prioridad en tarjetas.
+  // Si no existe, reutiliza la imagen Hero.
+  const cardImage = artist.featured_url || artist.hero_url || "";
+
   return (
     <article className="artist-card">
-      <div className="artist-card__visual">
+      <div
+        className={`artist-card__visual ${
+          cardImage ? "artist-card__visual--with-image" : ""
+        }`}
+        style={
+          cardImage
+            ? {
+                backgroundImage: `url("${cardImage}")`,
+              }
+            : undefined
+        }
+      >
         <span className="artist-card__index">
           {String(index + 1).padStart(2, "0")}
         </span>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import AdminSidebar from "../../features/admin/components/AdminSidebar";
 import AdminNotice from "../../features/admin/components/AdminNotice";
@@ -8,11 +8,17 @@ import AdminTeam from "../../features/admin/components/AdminTeam";
 import AdminArtists from "../../features/artists/components/admin/AdminArtists";
 import ArtistModal from "../../features/artists/components/admin/ArtistModal";
 
-import { adminArtistsQueryOptions } from "../../features/artists/api/artistsQueries";
+import {
+  adminArtistsQueryOptions,
+  adminArtistByIdQueryOptions,
+} from "../../features/artists/api/artistsQueries";
+
 import {
   useCreateArtistMutation,
+  useUpdateArtistMutation,
   usePublishArtistMutation,
   useArchiveArtistMutation,
+  useRestoreArtistMutation,
 } from "../../features/artists/api/artistsMutations";
 
 import "./AdminPage.css";
@@ -22,6 +28,9 @@ function AdminPage() {
   const [section, setSection] = useState("artists");
   const [modalOpen, setModalOpen] = useState(false);
   const [notice, setNotice] = useState("");
+  const [editingArtist, setEditingArtist] = useState(null);
+
+  const queryClient = useQueryClient();
 
   // Trae todos los artistas visibles para administración.
   const {
@@ -33,21 +42,70 @@ function AdminPage() {
   // Crea artistas reales en Supabase.
   const createArtistMutation = useCreateArtistMutation();
 
+  // Actualiza artistas existentes en Supabase.
+  const updateArtistMutation = useUpdateArtistMutation();
+
   // Publica un artista y actualiza el catálogo.
   const publishArtistMutation = usePublishArtistMutation();
 
   // Archiva un artista y lo retira del catálogo público.
   const archiveArtistMutation = useArchiveArtistMutation();
 
+  // Restaura un artista previamente archivado.
+  const restoreArtistMutation = useRestoreArtistMutation();
+
+  // Cierra el formulario y limpia el artista en edición.
+  function closeArtistModal() {
+    setModalOpen(false);
+    setEditingArtist(null);
+  }
+
   // Guarda un nuevo artista como borrador.
   async function handleCreateArtist(artist) {
     try {
       await createArtistMutation.mutateAsync(artist);
 
-      setModalOpen(false);
+      closeArtistModal();
+
       setNotice("Artista creado correctamente como borrador.");
     } catch {
       setNotice("No fue posible crear el artista.");
+    }
+  }
+
+  // Actualiza la información base de un artista existente.
+  async function handleUpdateArtist(id, changes) {
+    try {
+      await updateArtistMutation.mutateAsync({
+        id,
+        changes,
+      });
+
+      closeArtistModal();
+
+      setNotice("Artista actualizado correctamente.");
+    } catch {
+      setNotice("No fue posible actualizar el artista.");
+    }
+  }
+
+  // Abre el formulario vacío para crear un artista.
+  function handleAddArtist() {
+    setEditingArtist(null);
+    setModalOpen(true);
+  }
+
+  // Trae la ficha completa y abre el formulario para editar el artista.
+  async function handleEditArtist(artist) {
+    try {
+      const fullArtist = await queryClient.fetchQuery(
+        adminArtistByIdQueryOptions(artist.id),
+      );
+
+      setEditingArtist(fullArtist);
+      setModalOpen(true);
+    } catch {
+      setNotice(`No fue posible cargar "${artist.name}" para edición.`);
     }
   }
 
@@ -73,6 +131,17 @@ function AdminPage() {
     }
   }
 
+  // Recupera un artista archivado y lo devuelve a borrador.
+  async function handleRestoreArtist(artist) {
+    try {
+      await restoreArtistMutation.mutateAsync(artist.id);
+
+      setNotice(`"${artist.name}" fue recuperado como borrador.`);
+    } catch {
+      setNotice(`No fue posible recuperar "${artist.name}".`);
+    }
+  }
+
   return (
     <div className="admin-shell">
       <div className="admin">
@@ -94,11 +163,14 @@ function AdminPage() {
               {!isLoadingArtists && !isArtistsError && (
                 <AdminArtists
                   artists={artists}
-                  onAdd={() => setModalOpen(true)}
+                  onAdd={handleAddArtist}
+                  onEdit={handleEditArtist}
                   onPublish={handlePublishArtist}
                   onArchive={handleArchiveArtist}
+                  onRestore={handleRestoreArtist}
                   isPublishing={publishArtistMutation.isPending}
                   isArchiving={archiveArtistMutation.isPending}
+                  isRestoring={restoreArtistMutation.isPending}
                 />
               )}
             </>
@@ -110,12 +182,18 @@ function AdminPage() {
 
       <AdminNotice message={notice} onClose={() => setNotice("")} />
 
-      <ArtistModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onCreate={handleCreateArtist}
-        isLoading={createArtistMutation.isPending}
-      />
+      {modalOpen && (
+        <ArtistModal
+          open
+          artist={editingArtist}
+          onClose={closeArtistModal}
+          onCreate={handleCreateArtist}
+          onUpdate={handleUpdateArtist}
+          isLoading={
+            createArtistMutation.isPending || updateArtistMutation.isPending
+          }
+        />
+      )}
     </div>
   );
 }

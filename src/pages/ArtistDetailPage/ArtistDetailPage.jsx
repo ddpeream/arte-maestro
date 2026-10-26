@@ -2,7 +2,6 @@ import { Navigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { publishedArtistBySlugQueryOptions } from "../../features/artists/api/artistsQueries";
-import { getArtistBySlug } from "../../features/artists/data/artists";
 
 import ArtistSidebar from "../../features/artists/components/detail/ArtistSidebar";
 import ArtistHero from "../../features/artists/components/detail/ArtistHero";
@@ -20,20 +19,14 @@ import "./ArtistDetailPage.css";
 function ArtistDetailPage() {
   const { slug } = useParams();
 
-  // Busca temporalmente el artista en los datos locales existentes.
-  const localArtist = getArtistBySlug(slug);
-
-  // Busca el artista publicado en Supabase.
+  // Trae desde Supabase el artista publicado correspondiente al slug.
   const {
-    data: databaseArtist,
+    data: artist,
     isLoading,
     isError,
   } = useQuery(publishedArtistBySlugQueryOptions(slug));
 
-  // Prioriza Supabase y usa los datos locales como respaldo temporal.
-  const artist = databaseArtist ?? localArtist;
-
-  if (isLoading && !localArtist) {
+  if (isLoading) {
     return (
       <main className="artist-profile">
         <div className="artist-profile__layout">
@@ -43,7 +36,7 @@ function ArtistDetailPage() {
     );
   }
 
-  if (isError && !localArtist) {
+  if (isError) {
     return (
       <main className="artist-profile">
         <div className="artist-profile__layout">
@@ -53,7 +46,7 @@ function ArtistDetailPage() {
     );
   }
 
-  // Si no existe ni en Supabase ni en los datos locales, vuelve al catálogo.
+  // Si no existe o no está publicado, vuelve al catálogo.
   if (!artist) {
     return <Navigate to="/artistas" replace />;
   }

@@ -14,7 +14,7 @@ function ArtistsPage() {
     isError,
   } = useQuery(publishedArtistsQueryOptions);
 
-  const artists = localArtists;
+  const artists = remoteArtists.length > 0 ? remoteArtists : localArtists;
 
   return (
     <main className="artists-page">

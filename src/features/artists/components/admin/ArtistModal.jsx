@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 
 import ArtistFormField from "./ArtistFormField";
 import ArtistImagePicker from "./ArtistImagePicker";
-import { EMPTY_ARTIST, SLUG_REGEX, slugify } from "../../utils/artistFormUtils";
+import { SLUG_REGEX, getArtistFormValues, slugify } from "../../utils/artistFormUtils";
 
-// Presenta el formulario para crear borradores de artistas.
-function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
-  const [form, setForm] = useState(EMPTY_ARTIST);
-  const [slugTouched, setSlugTouched] = useState(false);
+// Presenta el formulario para crear o editar artistas.
+function ArtistModal({
+  open,
+  artist,
+  onClose,
+  onCreate,
+  onUpdate,
+  isLoading = false,
+}) {
+  const [form, setForm] = useState(() => getArtistFormValues(artist));
+  const [slugTouched, setSlugTouched] = useState(() => Boolean(artist));
   const [genreInput, setGenreInput] = useState("");
+  const isEditing = Boolean(artist);
 
   // Actualiza un campo del formulario.
   function update(key, value) {
@@ -42,7 +50,7 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
     setGenreInput("");
   }
 
-  // Prepara y guarda el nuevo artista.
+  // Prepara y guarda el artista según esté creando o editando.
   async function submit(event) {
     event.preventDefault();
 
@@ -50,29 +58,26 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
       return;
     }
 
-    await onCreate({
+    const payload = {
       ...form,
+
       name: form.name.trim(),
       slug: form.slug.trim(),
+
       founded_year: form.founded_year === "" ? null : Number(form.founded_year),
+
       sort_order: Number(form.sort_order || 0),
 
       biography: form.biography
         .map((paragraph) => paragraph.trim())
         .filter(Boolean),
+    };
 
-      hero_file: undefined,
-      featured_file: undefined,
-    });
-
-    setForm({
-      ...EMPTY_ARTIST,
-      genres: [],
-      biography: [""],
-    });
-
-    setSlugTouched(false);
-    setGenreInput("");
+    if (isEditing) {
+      await onUpdate(artist.id, payload);
+    } else {
+      await onCreate(payload);
+    }
   }
 
   if (!open) return null;
@@ -94,8 +99,13 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
       >
         <div className="modal__header">
           <div>
-            <span className="eyebrow">Nuevo registro</span>
-            <h2 id="admin-artist-title">Agregar artista</h2>
+            <span className="eyebrow">
+              {isEditing ? "Editar registro" : "Nuevo registro"}
+            </span>
+
+            <h2 id="admin-artist-title">
+              {isEditing ? "Editar artista" : "Agregar artista"}
+            </h2>
           </div>
 
           <button
@@ -338,14 +348,16 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
 
             <div className="field-grid">
               <ArtistImagePicker
-                label="Imagen principal (hero)"
+                label="Imagen principal (Hero)"
                 file={form.hero_file}
+                currentUrl={artist?.hero_url ?? ""}
                 onChange={(file) => update("hero_file", file)}
               />
 
               <ArtistImagePicker
-                label="Imagen destacada (home)"
+                label="Imagen destacada (Home)"
                 file={form.featured_file}
+                currentUrl={artist?.featured_url ?? ""}
                 onChange={(file) => update("featured_file", file)}
               />
             </div>
@@ -369,8 +381,14 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
             </div>
 
             <p className="admin-draft-hint">
-              El artista se crea como <b>borrador</b>. La publicación es un paso
-              posterior.
+              {isEditing ? (
+                <>Los cambios actualizarán la información actual del artista.</>
+              ) : (
+                <>
+                  El artista se crea como <b>borrador</b>. La publicación es un
+                  paso posterior.
+                </>
+              )}
             </p>
           </section>
 
@@ -384,8 +402,16 @@ function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
               Cancelar
             </button>
 
-            <button type="submit" className="btn btn--gold" disabled={isLoading}>
-              {isLoading ? "Guardando..." : "Guardar borrador"}
+            <button
+              type="submit"
+              className="btn btn--gold"
+              disabled={isLoading}
+            >
+              {isLoading
+                ? "Guardando..."
+                : isEditing
+                  ? "Guardar cambios"
+                  : "Guardar borrador"}
             </button>
           </div>
         </form>

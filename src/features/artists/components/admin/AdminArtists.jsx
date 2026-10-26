@@ -28,8 +28,10 @@ function AdminArtists({
   onEdit,
   onPublish,
   onArchive,
+  onRestore,
   isPublishing = false,
   isArchiving = false,
+  isRestoring = false,
 }) {
   return (
     <section className="admin-section is-active">
@@ -120,6 +122,17 @@ function AdminArtists({
                     onClick={() => onArchive?.(artist)}
                   >
                     {isArchiving ? "Archivando..." : "Archivar"}
+                  </button>
+                )}
+
+                {artist.publication_status === "archived" && (
+                  <button
+                    type="button"
+                    className="btn btn--small btn--outline"
+                    disabled={isRestoring}
+                    onClick={() => onRestore?.(artist)}
+                  >
+                    {isRestoring ? "Recuperando..." : "Recuperar"}
                   </button>
                 )}
               </div>
