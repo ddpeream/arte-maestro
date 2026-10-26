@@ -1,0 +1,60 @@
+export const ARTIST_LIST_SELECT = `
+  id,
+  slug,
+  name,
+  city,
+  country_code,
+  founded_year,
+  concept,
+  tagline,
+  short_description,
+  genres,
+  hero_asset_id,
+  featured_asset_id,
+  is_featured,
+  sort_order,
+  publication_status,
+  published_at
+`;
+
+export const ARTIST_DETAIL_SELECT = `
+  id,
+  slug,
+  name,
+  city,
+  country_code,
+  founded_year,
+  concept,
+  tagline,
+  quote,
+  short_description,
+  description,
+  biography,
+  genres,
+  hero_asset_id,
+  featured_asset_id,
+  is_featured,
+  sort_order,
+  publication_status,
+  published_at,
+  created_at,
+  updated_at
+`;
+
+export const ARTIST_ADMIN_LIST_SELECT = `
+  id,
+  slug,
+  name,
+  city,
+  country_code,
+  founded_year,
+  concept,
+  short_description,
+  genres,
+  is_featured,
+  sort_order,
+  publication_status,
+  published_at,
+  created_at,
+  updated_at
+`;

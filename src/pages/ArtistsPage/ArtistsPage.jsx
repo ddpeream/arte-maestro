@@ -1,11 +1,21 @@
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 
-import { artists } from "../../features/artists/data/artists";
+import ArtistCard from "../../features/artists/components/ArtistCard";
+import { artists as localArtists } from "../../features/artists/data/artists";
+import { publishedArtistsQueryOptions } from "../../features/artists/api/artistsQueries";
 
 import "./ArtistsPage.css";
 
+// Presenta el catálogo usando Supabase y conserva datos locales como respaldo temporal.
 function ArtistsPage() {
+  const {
+    data: remoteArtists = [],
+    isLoading,
+    isError,
+  } = useQuery(publishedArtistsQueryOptions);
+
+  const artists = remoteArtists.length > 0 ? remoteArtists : localArtists;
+
   return (
     <main className="artists-page">
       <header className="artists-page__header">
@@ -19,39 +29,19 @@ function ArtistsPage() {
         </p>
       </header>
 
+      {isLoading && (
+        <p className="artists-page__status">Cargando artistas...</p>
+      )}
+
+      {isError && (
+        <p className="artists-page__status">
+          No fue posible consultar Supabase. Mostrando catálogo local.
+        </p>
+      )}
+
       <section className="artists-grid">
         {artists.map((artist, index) => (
-          <article key={artist.id} className="artist-card">
-            <div className="artist-card__visual">
-              <span className="artist-card__index">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-
-              <div className="artist-card__visual-info">
-                <span>{artist.city}</span>
-                <strong>{artist.concept}</strong>
-              </div>
-            </div>
-
-            <div className="artist-card__body">
-              <span className="eyebrow">Desde {artist.founded}</span>
-
-              <h2>{artist.name}</h2>
-
-              <p>{artist.shortDescription}</p>
-
-              <div className="artist-card__genres">
-                {artist.genres.slice(0, 4).map((genre) => (
-                  <span key={genre}>{genre}</span>
-                ))}
-              </div>
-
-              <Link to={`/artistas/${artist.slug}`}>
-                Ver artista
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </article>
+          <ArtistCard key={artist.id} artist={artist} index={index} />
         ))}
       </section>
     </main>
