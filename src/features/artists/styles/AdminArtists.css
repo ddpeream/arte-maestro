@@ -1,0 +1,116 @@
+/* Tabla administrativa de artistas. */
+
+.artists-table-wrap {
+    border: 1px solid var(--border-soft);
+    background: var(--color-graphite-2);
+}
+
+.artists-table-head,
+.artist-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1.4fr 1fr 0.9fr 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 16px 20px;
+}
+
+.artists-table-head {
+    color: var(--color-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.artist-row {
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.artist-row:last-child {
+    border-bottom: 0;
+}
+
+.artist-row__name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.artist-row__thumb {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    background:
+        radial-gradient(circle at 70% 20%,
+            rgba(215, 169, 74, 0.3),
+            transparent 50%),
+        linear-gradient(155deg,
+            var(--color-warm-brown),
+            var(--color-olive),
+            var(--color-deep-brown));
+}
+
+.artist-row__name strong {
+    display: block;
+    font-size: 0.88rem;
+}
+
+.artist-row__name span {
+    display: block;
+    margin-top: 2px;
+    color: var(--color-muted);
+    font-size: 0.68rem;
+}
+
+.artist-row .muted {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+}
+
+/* Estados de publicación. */
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    width: fit-content;
+    border: 1px solid currentColor;
+}
+
+.status-pill--draft {
+    color: var(--color-muted);
+}
+
+.status-pill--published {
+    color: var(--color-success);
+}
+
+.status-pill--archived {
+    color: var(--color-danger);
+}
+
+/* Adaptación de la tabla a pantallas pequeñas. */
+
+@media (max-width: 1050px) {
+
+    .artists-table-head,
+    .artist-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .artists-table-head {
+        display: none;
+    }
+
+    .artist-row {
+        padding: 18px 20px;
+    }
+}

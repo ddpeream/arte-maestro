@@ -3,6 +3,9 @@ import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 
+import { AuthProvider } from "../../features/auth/context/AuthProvider";
+
+// Reúne los proveedores globales de la aplicación.
 function AppProviders({ children }) {
   const [queryClient] = useState(
     () =>
@@ -19,9 +22,11 @@ function AppProviders({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        {children}
+        <AuthProvider>
+          {children}
 
-        <Toaster position="top-right" richColors closeButton />
+          <Toaster position="top-right" richColors closeButton />
+        </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

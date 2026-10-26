@@ -1,0 +1,110 @@
+/* Tabla administrativa del equipo. */
+
+.staff-table-wrap {
+    border: 1px solid var(--border-soft);
+    background: var(--color-graphite-2);
+    margin-bottom: 44px;
+}
+
+.staff-table-head,
+.staff-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.staff-table-head {
+    color: var(--color-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.staff-row {
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.staff-row:last-child {
+    border-bottom: 0;
+}
+
+.staff-row strong {
+    font-size: 0.85rem;
+}
+
+/* Indicadores de roles administrativos. */
+
+.role-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.role-pill--super_admin {
+    background: var(--color-gold);
+    color: var(--color-ink);
+}
+
+.role-pill--admin {
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold);
+}
+
+.role-pill--editor {
+    border: 1px solid var(--color-muted);
+    color: var(--color-muted);
+}
+
+.staff-row__actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Panel visual de autorización. */
+
+.form-panel {
+    max-width: 640px;
+    padding: 30px;
+    background: var(--color-graphite-2);
+    border: 1px solid var(--border-soft);
+}
+
+.form-panel h2 {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.form-panel>p {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Adaptación de la tabla del equipo. */
+
+@media (max-width: 1050px) {
+
+    .staff-table-head,
+    .staff-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .staff-table-head {
+        display: none;
+    }
+
+    .staff-row {
+        padding: 18px 20px;
+    }
+}

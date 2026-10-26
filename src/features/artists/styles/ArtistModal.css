@@ -1,0 +1,349 @@
+/* Campos compartidos por los formularios del panel. */
+
+.admin-shell .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.admin-shell .field {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+}
+
+.admin-shell .field--full {
+    grid-column: 1 / -1;
+}
+
+.admin-shell .field label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    color: var(--color-gold-dim);
+    text-transform: uppercase;
+}
+
+.admin-shell .field input,
+.admin-shell .field select,
+.admin-shell .field textarea,
+.admin-shell .repeater__item textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--border-soft);
+    background: var(--color-black);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.85rem;
+}
+
+.admin-shell .field textarea,
+.admin-shell .repeater__item textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.admin-shell .field input:focus,
+.admin-shell .field select:focus,
+.admin-shell .field textarea:focus,
+.admin-shell .repeater__item textarea:focus {
+    outline: none;
+    border-color: var(--color-gold-dim);
+    box-shadow: 0 0 0 2px rgba(215, 169, 74, 0.18);
+}
+
+.admin-shell .field small {
+    color: var(--color-muted);
+    font-size: 0.66rem;
+    line-height: 1.5;
+}
+
+.admin-shell .field.has-error input,
+.admin-shell .field.has-error textarea {
+    border-color: var(--color-danger);
+}
+
+.admin-shell .field__error {
+    color: #e0a1a1;
+    font-size: 0.66rem;
+    display: none;
+}
+
+.admin-shell .field.has-error .field__error {
+    display: block;
+}
+
+.admin-shell .field select:disabled,
+.admin-shell .field input:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Acciones del formulario. */
+
+.admin-shell .panel-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Géneros musicales. */
+
+.admin-shell .chip-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-soft);
+    background: var(--color-black);
+}
+
+.admin-shell .chip-input input {
+    flex: 1;
+    min-width: 120px;
+    border: 0;
+    background: transparent;
+    padding: 4px;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+}
+
+.admin-shell .chip-input input:focus {
+    outline: none;
+}
+
+.admin-shell .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 9px;
+    border: 1px solid var(--color-muted);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-shell .chip button {
+    all: unset;
+    cursor: pointer;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.admin-shell .chip button:hover {
+    color: var(--color-danger);
+}
+
+/* Biografía por párrafos. */
+
+.admin-shell .repeater {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-shell .repeater__item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.admin-shell .repeater__item textarea {
+    flex: 1;
+}
+
+.admin-shell .repeater__remove {
+    all: unset;
+    cursor: pointer;
+    padding: 10px 12px;
+    border: 1px solid var(--color-muted);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.admin-shell .repeater__remove:hover {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.admin-shell .repeater__add {
+    all: unset;
+    cursor: pointer;
+    padding: 9px 0;
+    color: var(--color-gold);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.admin-shell .repeater__add:hover {
+    color: var(--color-cream);
+}
+
+/* Selección y vista previa de imágenes. */
+
+.admin-shell .image-field {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.admin-shell .image-field__preview {
+    width: 86px;
+    height: 86px;
+    flex-shrink: 0;
+    background:
+        radial-gradient(circle at 70% 20%,
+            rgba(215, 169, 74, 0.25),
+            transparent 50%),
+        linear-gradient(155deg,
+            var(--color-warm-brown),
+            var(--color-olive),
+            var(--color-deep-brown));
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: var(--color-muted);
+    font-size: 0.6rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.admin-shell .image-field__preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-shell .image-field__controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-shell .image-field__controls input[type="file"] {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+}
+
+.admin-shell .image-field__meta {
+    color: var(--color-muted);
+    font-size: 0.64rem;
+}
+
+/* Modal de creación del artista. */
+
+.admin-shell .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.admin-shell .modal.is-open {
+    display: flex;
+}
+
+.admin-shell .modal__scrim {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgba(8, 7, 5, 0.86);
+}
+
+.admin-shell .modal__panel {
+    position: relative;
+    z-index: 1;
+    width: min(880px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    background: var(--color-graphite-2);
+    color: var(--color-text);
+    border: 1px solid var(--border-gold);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+}
+
+.admin-shell .modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.admin-shell .modal__header h2 {
+    margin: 8px 0 0;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    text-transform: uppercase;
+    line-height: 0.95;
+}
+
+.admin-shell .modal__close {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: var(--color-black);
+    color: var(--color-gold);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.admin-shell .modal__close:hover {
+    background: #000;
+}
+
+.admin-shell .form-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.admin-shell .form-sections>section>h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--color-dashed);
+}
+
+.admin-shell .admin-draft-hint {
+    margin-top: 14px;
+    color: var(--color-muted);
+    font-size: 0.72rem;
+    line-height: 1.6;
+}
+
+.admin-shell .admin-draft-hint b {
+    color: var(--color-gold-dim);
+}
+
+/* Adaptación del formulario a pantallas pequeñas. */
+
+@media (max-width: 700px) {
+    .admin-shell .field-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-shell .field--full {
+        grid-column: 1;
+    }
+}
