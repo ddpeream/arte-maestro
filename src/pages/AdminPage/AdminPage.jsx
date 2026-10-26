@@ -9,7 +9,11 @@ import AdminArtists from "../../features/artists/components/admin/AdminArtists";
 import ArtistModal from "../../features/artists/components/admin/ArtistModal";
 
 import { adminArtistsQueryOptions } from "../../features/artists/api/artistsQueries";
-import { useCreateArtistMutation } from "../../features/artists/api/artistsMutations";
+import {
+  useCreateArtistMutation,
+  usePublishArtistMutation,
+  useArchiveArtistMutation,
+} from "../../features/artists/api/artistsMutations";
 
 import "./AdminPage.css";
 
@@ -29,6 +33,12 @@ function AdminPage() {
   // Crea artistas reales en Supabase.
   const createArtistMutation = useCreateArtistMutation();
 
+  // Publica un artista y actualiza el catálogo.
+  const publishArtistMutation = usePublishArtistMutation();
+
+  // Archiva un artista y lo retira del catálogo público.
+  const archiveArtistMutation = useArchiveArtistMutation();
+
   // Guarda un nuevo artista como borrador.
   async function handleCreateArtist(artist) {
     try {
@@ -38,6 +48,28 @@ function AdminPage() {
       setNotice("Artista creado correctamente como borrador.");
     } catch {
       setNotice("No fue posible crear el artista.");
+    }
+  }
+
+  // Publica un artista previamente creado como borrador.
+  async function handlePublishArtist(artist) {
+    try {
+      await publishArtistMutation.mutateAsync(artist.id);
+
+      setNotice(`"${artist.name}" fue publicado correctamente.`);
+    } catch {
+      setNotice(`No fue posible publicar "${artist.name}".`);
+    }
+  }
+
+  // Archiva un artista publicado.
+  async function handleArchiveArtist(artist) {
+    try {
+      await archiveArtistMutation.mutateAsync(artist.id);
+
+      setNotice(`"${artist.name}" fue archivado correctamente.`);
+    } catch {
+      setNotice(`No fue posible archivar "${artist.name}".`);
     }
   }
 
@@ -63,6 +95,10 @@ function AdminPage() {
                 <AdminArtists
                   artists={artists}
                   onAdd={() => setModalOpen(true)}
+                  onPublish={handlePublishArtist}
+                  onArchive={handleArchiveArtist}
+                  isPublishing={publishArtistMutation.isPending}
+                  isArchiving={archiveArtistMutation.isPending}
                 />
               )}
             </>

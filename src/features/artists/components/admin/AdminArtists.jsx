@@ -21,8 +21,16 @@ function getPublicationStatus(status) {
   }
 }
 
-// Muestra el listado administrativo de artistas.
-function AdminArtists({ artists, onAdd }) {
+// Muestra el listado administrativo de artistas y sus acciones.
+function AdminArtists({
+  artists,
+  onAdd,
+  onEdit,
+  onPublish,
+  onArchive,
+  isPublishing = false,
+  isArchiving = false,
+}) {
   return (
     <section className="admin-section is-active">
       <div className="admin-section__head">
@@ -49,6 +57,7 @@ function AdminArtists({ artists, onAdd }) {
           <span>Estado</span>
           <span>Destacado</span>
           <span>Creado</span>
+          <span>Acciones</span>
         </div>
 
         {artists.map((artist) => {
@@ -61,7 +70,6 @@ function AdminArtists({ artists, onAdd }) {
 
                 <div>
                   <strong>{artist.name}</strong>
-
                   <span>{artist.city || "Sin ciudad"}</span>
                 </div>
               </div>
@@ -81,6 +89,40 @@ function AdminArtists({ artists, onAdd }) {
                     })
                   : "—"}
               </span>
+
+              <div className="artist-row__actions">
+                {onEdit && (
+                  <button
+                    type="button"
+                    className="btn btn--small btn--outline"
+                    onClick={() => onEdit(artist)}
+                  >
+                    Editar
+                  </button>
+                )}
+
+                {artist.publication_status === "draft" && (
+                  <button
+                    type="button"
+                    className="btn btn--small btn--gold"
+                    disabled={isPublishing}
+                    onClick={() => onPublish?.(artist)}
+                  >
+                    {isPublishing ? "Publicando..." : "Publicar"}
+                  </button>
+                )}
+
+                {artist.publication_status === "published" && (
+                  <button
+                    type="button"
+                    className="btn btn--small btn--outline"
+                    disabled={isArchiving}
+                    onClick={() => onArchive?.(artist)}
+                  >
+                    {isArchiving ? "Archivando..." : "Archivar"}
+                  </button>
+                )}
+              </div>
             </div>
           );
         })}

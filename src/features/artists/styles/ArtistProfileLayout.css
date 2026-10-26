@@ -1,0 +1,213 @@
+/* Estructura general del portafolio. */
+
+.artist-profile [id] {
+    scroll-margin-top: 100px;
+}
+
+.artist-profile__layout {
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.artist-profile__main {
+    min-width: 0;
+}
+
+/* Navegación lateral del artista. */
+
+.artist-profile__sidebar {
+    position: sticky;
+    top: 81px;
+    height: calc(100vh - 81px);
+    padding: 45px 30px;
+    background: var(--color-graphite);
+    border-right: 1px solid var(--border-soft);
+}
+
+.artist-profile__sidebar h1 {
+    margin: 15px 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.artist-profile__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 36px;
+}
+
+.artist-profile__tags span {
+    border: 1px solid var(--color-muted);
+    padding: 5px 9px;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+}
+
+.artist-profile__tags span:first-child {
+    background: var(--color-gold);
+    color: var(--color-ink);
+    border-color: var(--color-gold);
+    font-weight: 800;
+}
+
+.artist-profile__sidebar nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.artist-profile__sidebar nav a {
+    padding: 13px 0;
+    color: var(--color-muted);
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 0.72rem;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+.artist-profile__sidebar nav a:hover {
+    color: var(--color-gold);
+}
+
+.artist-profile__sections-toggle {
+    display: none;
+}
+
+.artist-profile__sections-toggle:focus-visible,
+.artist-profile__sidebar nav a:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 4px;
+}
+
+/* Portada principal del artista. */
+
+.artist-profile__hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 70vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: clamp(40px, 6vw, 90px);
+
+    background:
+        radial-gradient(ellipse 70% 60% at 75% 20%,
+            rgba(215, 169, 74, 0.22),
+            transparent 60%),
+        radial-gradient(ellipse 55% 65% at 10% 75%,
+            rgba(69, 74, 48, 0.4),
+            transparent 60%),
+        linear-gradient(155deg,
+            var(--color-warm-brown),
+            var(--color-deep-brown));
+}
+
+.artist-profile__hero-image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center 35%;
+}
+
+.artist-profile__hero:has(.artist-profile__hero-image)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background: linear-gradient(to top,
+            rgba(12, 11, 9, 0.9),
+            rgba(12, 11, 9, 0.08) 90%);
+}
+
+.artist-profile__hero h2 {
+    margin: 15px 0 0;
+    font-size: clamp(4rem, 9vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.18rem;
+    text-transform: uppercase;
+}
+
+.artist-profile__concept {
+    margin: 17px 0 0;
+    color: var(--color-gold);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.17rem;
+    text-transform: uppercase;
+}
+
+.artist-profile__tagline {
+    max-width: 650px;
+    margin: 10px 0 28px;
+    color: var(--color-beige-2);
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    line-height: 1.6;
+}
+
+.artist-profile__hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Navegación adaptable a tabletas y móviles. */
+
+@media (max-width: 1050px) {
+    .artist-profile__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .artist-profile__sidebar {
+        position: relative;
+        top: auto;
+        height: auto;
+    }
+
+    .artist-profile__sidebar nav {
+        display: none;
+    }
+
+    .artist-profile__sidebar nav.is-open {
+        display: flex;
+    }
+
+    .artist-profile__sections-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 15px;
+
+        border: 1px solid var(--border-gold);
+        background: transparent;
+        color: var(--color-gold);
+
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-align: left;
+    }
+
+    .artist-profile__sections-toggle[aria-expanded="true"] svg {
+        transform: rotate(180deg);
+    }
+
+    .artist-profile__sidebar nav a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+    }
+}

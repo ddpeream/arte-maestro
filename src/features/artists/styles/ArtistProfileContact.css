@@ -1,0 +1,143 @@
+/* Sección de contacto del artista. */
+
+.artist-contact {
+    padding: 70px 24px 60px;
+    background:
+        linear-gradient(180deg, #2a2a2a 0, #000 420px) no-repeat,
+        #000;
+    color: #fff;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.artist-contact__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 785px);
+    align-items: start;
+    gap: 30px;
+    max-width: 1175px;
+    margin: 0 auto;
+}
+
+/* Identidad y fotografía. */
+
+.artist-contact__artist,
+.artist-contact__registration {
+    min-width: 0;
+}
+
+.artist-contact__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 9px solid #454545;
+    border-radius: 28px;
+    margin-bottom: 24px;
+}
+
+.artist-contact__name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 12px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.artist-contact__avatar {
+    width: 34px;
+    height: 34px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Título del formulario. */
+
+.artist-contact__registration h2 {
+    margin: 0 0 46px;
+    font-family: inherit;
+    font-size: 54px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    text-transform: none;
+}
+
+/* Redes y plataformas musicales. */
+
+.artist-contact__social {
+    display: flex;
+    flex-direction: column;
+}
+
+.artist-contact__social a,
+.artist-contact__booking a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 46px;
+    padding: 12px 0;
+    border-bottom: 1px solid #191919;
+    color: #aaa;
+    font-size: 16px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.artist-contact__social svg,
+.artist-contact__booking svg {
+    flex-shrink: 0;
+}
+
+.artist-contact__social a:hover,
+.artist-contact__booking a:hover {
+    color: #fff;
+}
+
+.artist-contact__social a:focus-visible,
+.artist-contact__booking a:focus-visible {
+    outline: 2px solid #bbb;
+    outline-offset: 3px;
+}
+
+/* Booking y correos. */
+
+.artist-contact__booking {
+    margin-top: 28px;
+}
+
+.artist-contact__booking>span {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.artist-contact__booking a {
+    font-size: 13px;
+}
+
+/* Adaptación a pantallas pequeñas. */
+
+@media (max-width: 760px) {
+    .artist-contact {
+        padding: 40px 20px 50px;
+    }
+
+    .artist-contact__layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 36px;
+        max-width: 560px;
+    }
+
+    .artist-contact__photo {
+        max-width: 360px;
+    }
+}
+
+@media (max-width: 560px) {
+    .artist-contact__registration h2 {
+        font-size: 40px;
+        margin-bottom: 32px;
+    }
+}
