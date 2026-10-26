@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import AdminSidebar from "../../features/admin/components/AdminSidebar";
 import AdminNotice from "../../features/admin/components/AdminNotice";
@@ -7,31 +8,37 @@ import AdminTeam from "../../features/admin/components/AdminTeam";
 import AdminArtists from "../../features/artists/components/admin/AdminArtists";
 import ArtistModal from "../../features/artists/components/admin/ArtistModal";
 
+import { adminArtistsQueryOptions } from "../../features/artists/api/artistsQueries";
+import { useCreateArtistMutation } from "../../features/artists/api/artistsMutations";
+
 import "./AdminPage.css";
 
-// Coordina la navegación y el estado local del panel.
+// Coordina la navegación y las operaciones principales del panel.
 function AdminPage() {
   const [section, setSection] = useState("artists");
-  const [artists, setArtists] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [notice, setNotice] = useState("");
 
-  // Agrega un borrador temporal sin enviarlo a Supabase.
-  function createArtist(artist) {
-    setArtists((current) => [
-      {
-        ...artist,
-        id: crypto.randomUUID(),
-        publication_status: "draft",
-        created_at: new Date().toISOString(),
-      },
-      ...current,
-    ]);
+  // Trae todos los artistas visibles para administración.
+  const {
+    data: artists = [],
+    isLoading: isLoadingArtists,
+    isError: isArtistsError,
+  } = useQuery(adminArtistsQueryOptions);
 
-    setModalOpen(false);
-    setNotice(
-      "Borrador agregado a la vista local. Aún no se ha guardado en Supabase.",
-    );
+  // Crea artistas reales en Supabase.
+  const createArtistMutation = useCreateArtistMutation();
+
+  // Guarda un nuevo artista como borrador.
+  async function handleCreateArtist(artist) {
+    try {
+      await createArtistMutation.mutateAsync(artist);
+
+      setModalOpen(false);
+      setNotice("Artista creado correctamente como borrador.");
+    } catch {
+      setNotice("No fue posible crear el artista.");
+    }
   }
 
   return (
@@ -41,7 +48,24 @@ function AdminPage() {
 
         <main className="admin__main">
           {section === "artists" ? (
-            <AdminArtists artists={artists} onAdd={() => setModalOpen(true)} />
+            <>
+              {isLoadingArtists && (
+                <p className="admin__status">Cargando artistas...</p>
+              )}
+
+              {isArtistsError && (
+                <p className="admin__status">
+                  No fue posible cargar los artistas.
+                </p>
+              )}
+
+              {!isLoadingArtists && !isArtistsError && (
+                <AdminArtists
+                  artists={artists}
+                  onAdd={() => setModalOpen(true)}
+                />
+              )}
+            </>
           ) : (
             <AdminTeam />
           )}
@@ -53,7 +77,8 @@ function AdminPage() {
       <ArtistModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onCreate={createArtist}
+        onCreate={handleCreateArtist}
+        isLoading={createArtistMutation.isPending}
       />
     </div>
   );

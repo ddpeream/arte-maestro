@@ -1,3 +1,26 @@
+// Devuelve la presentación visual del estado de publicación.
+function getPublicationStatus(status) {
+  switch (status) {
+    case "published":
+      return {
+        label: "Publicado",
+        className: "status-pill status-pill--published",
+      };
+
+    case "archived":
+      return {
+        label: "Archivado",
+        className: "status-pill status-pill--archived",
+      };
+
+    default:
+      return {
+        label: "Borrador",
+        className: "status-pill status-pill--draft",
+      };
+  }
+}
+
 // Muestra el listado administrativo de artistas.
 function AdminArtists({ artists, onAdd }) {
   return (
@@ -5,24 +28,18 @@ function AdminArtists({ artists, onAdd }) {
       <div className="admin-section__head">
         <div>
           <span className="eyebrow">Gestión de contenido</span>
+
           <h1>Artistas</h1>
+
           <p>
-            Cada artista se crea como borrador. Publicarlo es una acción aparte,
-            una vez tenga al menos una descripción corta.
+            Crea artistas, completa su información y publícalos cuando estén
+            listos para aparecer en el catálogo.
           </p>
         </div>
 
         <button type="button" className="btn btn--gold" onClick={onAdd}>
           + Agregar artista
         </button>
-      </div>
-
-      <div className="admin-note">
-        <span>ⓘ</span>
-        <span>
-          Vista local de prueba: los registros agregados no se envían a Supabase
-          y se perderán al recargar la página.
-        </span>
       </div>
 
       <div className="artists-table-wrap">
@@ -34,32 +51,39 @@ function AdminArtists({ artists, onAdd }) {
           <span>Creado</span>
         </div>
 
-        {artists.map((artist) => (
-          <div className="artist-row" key={artist.id}>
-            <div className="artist-row__name">
-              <div className="artist-row__thumb" />
+        {artists.map((artist) => {
+          const status = getPublicationStatus(artist.publication_status);
 
-              <div>
-                <strong>{artist.name}</strong>
-                <span>{artist.city || "Sin ciudad"}</span>
+          return (
+            <div className="artist-row" key={artist.id}>
+              <div className="artist-row__name">
+                <div className="artist-row__thumb" />
+
+                <div>
+                  <strong>{artist.name}</strong>
+
+                  <span>{artist.city || "Sin ciudad"}</span>
+                </div>
               </div>
+
+              <span className="muted">/{artist.slug}</span>
+
+              <span className={status.className}>{status.label}</span>
+
+              <span className="muted">{artist.is_featured ? "Sí" : "No"}</span>
+
+              <span className="muted">
+                {artist.created_at
+                  ? new Date(artist.created_at).toLocaleDateString("es-CO", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "—"}
+              </span>
             </div>
-
-            <span className="muted">/{artist.slug}</span>
-
-            <span className="status-pill status-pill--draft">Borrador</span>
-
-            <span className="muted">{artist.is_featured ? "Sí" : "No"}</span>
-
-            <span className="muted">
-              {new Date(artist.created_at).toLocaleDateString("es-CO", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              })}
-            </span>
-          </div>
-        ))}
+          );
+        })}
 
         {artists.length === 0 && (
           <div className="empty-state">

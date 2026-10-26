@@ -5,7 +5,7 @@ import ArtistImagePicker from "./ArtistImagePicker";
 import { EMPTY_ARTIST, SLUG_REGEX, slugify } from "../../utils/artistFormUtils";
 
 // Presenta el formulario para crear borradores de artistas.
-function ArtistModal({ open, onClose, onCreate }) {
+function ArtistModal({ open, onClose, onCreate, isLoading = false }) {
   const [form, setForm] = useState(EMPTY_ARTIST);
   const [slugTouched, setSlugTouched] = useState(false);
   const [genreInput, setGenreInput] = useState("");
@@ -42,24 +42,35 @@ function ArtistModal({ open, onClose, onCreate }) {
     setGenreInput("");
   }
 
-  // Prepara y entrega el borrador al componente padre.
-  function submit(event) {
+  // Prepara y guarda el nuevo artista.
+  async function submit(event) {
     event.preventDefault();
 
-    if (!SLUG_REGEX.test(form.slug)) return;
+    if (!SLUG_REGEX.test(form.slug) || isLoading) {
+      return;
+    }
 
-    onCreate({
+    await onCreate({
       ...form,
       name: form.name.trim(),
       slug: form.slug.trim(),
       founded_year: form.founded_year === "" ? null : Number(form.founded_year),
       sort_order: Number(form.sort_order || 0),
-      biography: form.biography.map((p) => p.trim()).filter(Boolean),
+
+      biography: form.biography
+        .map((paragraph) => paragraph.trim())
+        .filter(Boolean),
+
       hero_file: undefined,
       featured_file: undefined,
     });
 
-    setForm({ ...EMPTY_ARTIST, genres: [], biography: [""] });
+    setForm({
+      ...EMPTY_ARTIST,
+      genres: [],
+      biography: [""],
+    });
+
     setSlugTouched(false);
     setGenreInput("");
   }
@@ -368,12 +379,13 @@ function ArtistModal({ open, onClose, onCreate }) {
               type="button"
               className="btn btn--outline"
               onClick={onClose}
+              disabled={isLoading}
             >
               Cancelar
             </button>
 
-            <button type="submit" className="btn btn--gold">
-              Guardar borrador (local)
+            <button type="submit" className="btn btn--gold" disabled={isLoading}>
+              {isLoading ? "Guardando..." : "Guardar borrador"}
             </button>
           </div>
         </form>
