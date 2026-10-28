@@ -7,6 +7,9 @@ import ArtistMembersEditor from "./ArtistMembersEditor";
 import ArtistReleasesEditor from "./ArtistReleasesEditor";
 import ArtistVideosEditor from "./ArtistVideosEditor";
 import ArtistGalleryEditor from "./ArtistGalleryEditor";
+import ArtistPressEditor from "./ArtistPressEditor";
+import ArtistLinksEditor from "./ArtistLinksEditor";
+import ArtistContactsEditor from "./ArtistContactsEditor";
 import { SLUG_REGEX, getArtistFormValues, slugify } from "../../utils/artistFormUtils";
 
 // Presenta el formulario para crear o editar artistas.
@@ -426,6 +429,24 @@ function ArtistModal({
               <ArtistGalleryEditor
                 artistId={artist.id}
                 gallery={artist.gallery ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistPressEditor
+                artistId={artist.id}
+                press={artist.press ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistLinksEditor
+                artistId={artist.id}
+                links={artist.links ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistContactsEditor
+                artistId={artist.id}
+                contacts={artist.contacts ?? []}
                 onChanged={onRefreshArtist}
               />
             </>

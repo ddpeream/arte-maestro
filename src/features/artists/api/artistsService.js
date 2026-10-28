@@ -78,6 +78,81 @@ function withArtistMediaUrls(artist) {
             }))
         : [];
 
+      const press = Array.isArray(artist.press)
+        ? [...artist.press].sort(
+            (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
+          )
+        : [];
+
+      const links = Array.isArray(artist.links)
+        ? [...artist.links].sort(
+            (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
+          )
+        : [];
+
+      const platforms = {};
+
+      for (const link of links) {
+        switch (link.platform) {
+          case "apple_music":
+            platforms.appleMusic = link.url;
+            break;
+
+          case "spotify":
+            platforms.spotify = link.url;
+            break;
+
+          case "youtube":
+            platforms.youtube = link.url;
+            break;
+
+          case "instagram":
+            platforms.instagram = link.url;
+            break;
+
+          case "facebook":
+            platforms.facebook = link.url;
+            break;
+
+          case "tiktok":
+            platforms.tiktok = link.url;
+            break;
+
+          case "soundcloud":
+            platforms.soundcloud = link.url;
+            break;
+
+          case "website":
+            platforms.website = link.url;
+            break;
+
+          default:
+            break;
+        }
+      }
+
+    const contacts = Array.isArray(artist.contacts)
+      ? [...artist.contacts].sort(
+          (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
+        )
+      : [];
+
+    const emails = contacts
+      .filter((contact) => contact.kind === "email")
+      .map((contact) => contact.value);
+
+    const phones = contacts
+      .filter((contact) => contact.kind === "phone")
+      .map((contact) => contact.value);
+
+    const primaryEmail =
+      contacts.find((contact) => contact.kind === "email" && contact.is_primary)
+        ?.value ?? "";
+
+    const primaryPhone =
+      contacts.find((contact) => contact.kind === "phone" && contact.is_primary)
+        ?.value ?? "";
+
   return {
     ...artist,
 
@@ -151,6 +226,18 @@ function withArtistMediaUrls(artist) {
       })),
 
     gallery,
+    press,
+    links,
+    platforms,
+
+    contacts,
+
+    contact: {
+      emails,
+      phones,
+      primaryEmail,
+      primaryPhone,
+    },
   };
 }
 
@@ -264,6 +351,9 @@ export async function getPublishedArtistBySlug(slug) {
     .eq("releases.publication_status", "published")
     .eq("videos.publication_status", "published")
     .eq("gallery.publication_status", "published")
+    .eq("press.publication_status", "published")
+    .eq("links.publication_status", "published")
+    .eq("contacts.publication_status", "published")
     .maybeSingle();
 
   if (error) {

@@ -181,6 +181,32 @@ export const ARTIST_DETAIL_SELECT = `
       external_provider,
       external_url
     )
+  ),
+
+  press:artist_press!artist_press_artist_id_fkey (
+    id,
+    name,
+    url,
+    sort_order,
+    publication_status
+  ),
+
+    links:artist_links!artist_links_artist_id_fkey (
+    id,
+    platform,
+    url,
+    sort_order,
+    publication_status
+  ),
+
+    contacts:artist_contacts!artist_contacts_artist_id_fkey (
+    id,
+    kind,
+    value,
+    label,
+    is_primary,
+    sort_order,
+    publication_status
   )
 `;
 
@@ -370,5 +396,31 @@ export const ARTIST_ADMIN_DETAIL_SELECT = `
       external_provider,
       external_url
     )
+  ),
+
+  press:artist_press!artist_press_artist_id_fkey (
+    id,
+    name,
+    url,
+    sort_order,
+    publication_status
+  ),
+
+    links:artist_links!artist_links_artist_id_fkey (
+    id,
+    platform,
+    url,
+    sort_order,
+    publication_status
+  ),
+
+    contacts:artist_contacts!artist_contacts_artist_id_fkey (
+    id,
+    kind,
+    value,
+    label,
+    is_primary,
+    sort_order,
+    publication_status
   )
 `;
