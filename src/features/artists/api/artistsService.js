@@ -19,6 +19,30 @@ function withArtistMediaUrls(artist) {
     return null;
   }
 
+  const members = Array.isArray(artist.members)
+    ? [...artist.members]
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((member) => ({
+          ...member,
+
+          photo_url: member.photo_asset
+            ? getMediaAssetPublicUrl(member.photo_asset)
+            : "",
+        }))
+    : [];
+
+  const releases = Array.isArray(artist.releases)
+    ? [...artist.releases]
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((release) => ({
+          ...release,
+
+          cover_url: release.cover_asset
+            ? getMediaAssetPublicUrl(release.cover_asset)
+            : "",
+        }))
+    : [];
+
   return {
     ...artist,
 
@@ -32,11 +56,40 @@ function withArtistMediaUrls(artist) {
 
     stats: Array.isArray(artist.stats)
       ? [...artist.stats].sort(
-          (a, b) =>
-            (a.sort_order ?? 0) -
-            (b.sort_order ?? 0),
+          (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
         )
       : [],
+
+    members: Array.isArray(artist.members)
+      ? [...artist.members]
+          .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+          .map((member) => ({
+            ...member,
+
+            photo_url: member.photo_asset
+              ? getMediaAssetPublicUrl(member.photo_asset)
+              : "",
+          }))
+      : [],
+
+    // Adaptador temporal hacia el formato que ya consume ArtistCrew.
+    crew: members.map((member) => ({
+      id: member.id,
+      name: member.name,
+      alias: member.alias,
+      roles: member.roles ?? [],
+      image: member.photo_url,
+    })),
+
+    // Adaptador hacia el formato que ya consume ArtistDiscography.
+    albums: releases.map((release) => ({
+      id: release.id,
+      title: release.title,
+      year: release.release_year,
+      type: release.release_type,
+      url: release.url,
+      cover: release.cover_url,
+    })),
   };
 }
 
@@ -146,6 +199,8 @@ export async function getPublishedArtistBySlug(slug) {
     .eq("slug", slug)
     .eq("publication_status", "published")
     .eq("stats.publication_status", "published")
+    .eq("members.publication_status", "published")
+    .eq("releases.publication_status", "published")
     .maybeSingle();
 
   if (error) {

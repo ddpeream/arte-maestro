@@ -94,6 +94,51 @@ export const ARTIST_DETAIL_SELECT = `
     label,
     sort_order,
     publication_status
+  ),
+
+  members:artist_members!artist_members_artist_id_fkey (
+    id,
+    name,
+    alias,
+    roles,
+    photo_asset_id,
+    sort_order,
+    publication_status,
+
+    photo_asset:media_assets!artist_members_photo_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
+  ),
+
+    releases:artist_releases!artist_releases_artist_id_fkey (
+    id,
+    title,
+    release_type,
+    release_year,
+    url,
+    cover_asset_id,
+    sort_order,
+    publication_status,
+
+    cover_asset:media_assets!artist_releases_cover_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
   )
 `;
 
@@ -196,5 +241,50 @@ export const ARTIST_ADMIN_DETAIL_SELECT = `
     label,
     sort_order,
     publication_status
+  ),
+
+  members:artist_members!artist_members_artist_id_fkey (
+    id,
+    name,
+    alias,
+    roles,
+    photo_asset_id,
+    sort_order,
+    publication_status,
+
+    photo_asset:media_assets!artist_members_photo_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
+  ),
+
+    releases:artist_releases!artist_releases_artist_id_fkey (
+    id,
+    title,
+    release_type,
+    release_year,
+    url,
+    cover_asset_id,
+    sort_order,
+    publication_status,
+
+    cover_asset:media_assets!artist_releases_cover_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
   )
 `;

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import ArtistFormField from "./ArtistFormField";
 import ArtistImagePicker from "./ArtistImagePicker";
 import ArtistStatsEditor from "./ArtistStatsEditor";
+import ArtistMembersEditor from "./ArtistMembersEditor";
+import ArtistReleasesEditor from "./ArtistReleasesEditor";
 import { SLUG_REGEX, getArtistFormValues, slugify } from "../../utils/artistFormUtils";
 
 // Presenta el formulario para crear o editar artistas.
@@ -394,11 +396,25 @@ function ArtistModal({
             </p>
           </section>
           {isEditing && (
-            <ArtistStatsEditor
-              artistId={artist.id}
-              stats={artist.stats ?? []}
-              onChanged={onRefreshArtist}
-            />
+            <>
+              <ArtistStatsEditor
+                artistId={artist.id}
+                stats={artist.stats ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistMembersEditor
+                artistId={artist.id}
+                members={artist.members ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistReleasesEditor
+                artistId={artist.id}
+                releases={artist.releases ?? []}
+                onChanged={onRefreshArtist}
+              />
+            </>
           )}
           <div className="panel-actions">
             <button
