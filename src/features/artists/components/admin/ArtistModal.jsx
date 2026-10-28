@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import ArtistFormField from "./ArtistFormField";
 import ArtistImagePicker from "./ArtistImagePicker";
+import ArtistStatsEditor from "./ArtistStatsEditor";
 import { SLUG_REGEX, getArtistFormValues, slugify } from "../../utils/artistFormUtils";
 
 // Presenta el formulario para crear o editar artistas.
@@ -11,6 +12,7 @@ function ArtistModal({
   onClose,
   onCreate,
   onUpdate,
+  onRefreshArtist,
   isLoading = false,
 }) {
   const [form, setForm] = useState(() => getArtistFormValues(artist));
@@ -391,7 +393,13 @@ function ArtistModal({
               )}
             </p>
           </section>
-
+          {isEditing && (
+            <ArtistStatsEditor
+              artistId={artist.id}
+              stats={artist.stats ?? []}
+              onChanged={onRefreshArtist}
+            />
+          )}
           <div className="panel-actions">
             <button
               type="button"

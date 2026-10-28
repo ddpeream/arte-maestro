@@ -86,6 +86,14 @@ export const ARTIST_DETAIL_SELECT = `
     storage_path,
     external_provider,
     external_url
+  ),
+
+  stats:artist_stats!artist_stats_artist_id_fkey (
+    id,
+    value,
+    label,
+    sort_order,
+    publication_status
   )
 `;
 
@@ -133,7 +141,8 @@ export const ARTIST_ADMIN_LIST_SELECT = `
   )
 `;
 
-// Campos necesarios para editar la información base de un artista.
+// Campos necesarios para editar la información base
+// y las secciones relacionadas de un artista.
 export const ARTIST_ADMIN_DETAIL_SELECT = `
   id,
   slug,
@@ -179,5 +188,13 @@ export const ARTIST_ADMIN_DETAIL_SELECT = `
     storage_path,
     external_provider,
     external_url
+  ),
+
+  stats:artist_stats!artist_stats_artist_id_fkey (
+    id,
+    value,
+    label,
+    sort_order,
+    publication_status
   )
 `;

@@ -13,6 +13,8 @@ import ArtistCrew from "../../features/artists/components/detail/ArtistCrew";
 import ArtistPress from "../../features/artists/components/detail/ArtistPress";
 import ArtistContact from "../../features/artists/components/detail/ArtistContact";
 
+// import { artists as LocalArtists } from "../../features/artists/data/artists";
+
 import "./ArtistDetailPage.css";
 
 // Coordina la presentación del portafolio público de un artista.

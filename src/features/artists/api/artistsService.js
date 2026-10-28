@@ -12,7 +12,8 @@ import {
   uploadArtistImage,
 } from "./artistMediaService";
 
-// Añade URLs utilizables por React a los recursos multimedia del artista.
+// Adapta los recursos multimedia y las secciones relacionadas
+// al formato que consume React.
 function withArtistMediaUrls(artist) {
   if (!artist) {
     return null;
@@ -28,6 +29,14 @@ function withArtistMediaUrls(artist) {
     featured_url: artist.featured_asset
       ? getMediaAssetPublicUrl(artist.featured_asset)
       : "",
+
+    stats: Array.isArray(artist.stats)
+      ? [...artist.stats].sort(
+          (a, b) =>
+            (a.sort_order ?? 0) -
+            (b.sort_order ?? 0),
+        )
+      : [],
   };
 }
 
@@ -128,12 +137,15 @@ export async function getAdminArtists() {
 }
 
 // Trae el detalle público de un artista usando su slug.
+// Las secciones del portafolio se limitan explícitamente a contenido publicado,
+// incluso si quien visita la ruta pública tiene una sesión administrativa.
 export async function getPublishedArtistBySlug(slug) {
   const { data, error } = await supabase
     .from("artists")
     .select(ARTIST_DETAIL_SELECT)
     .eq("slug", slug)
     .eq("publication_status", "published")
+    .eq("stats.publication_status", "published")
     .maybeSingle();
 
   if (error) {
@@ -215,8 +227,7 @@ export async function restoreArtist(id) {
   return withArtistMediaUrls(data);
 }
 
-// Trae la información base completa de un artista
-// para edición administrativa.
+// Trae la información base completa de un artista para edición administrativa.
 export async function getAdminArtistById(id) {
   const { data, error } = await supabase
     .from("artists")
@@ -225,8 +236,23 @@ export async function getAdminArtistById(id) {
     .single();
 
   if (error) {
+    console.error(
+      "Error cargando artista administrativo:",
+      error,
+    );
+
     throw error;
   }
+
+  console.log(
+    "ARTISTA ADMIN COMPLETO:",
+    data,
+  );
+
+  console.log(
+    "STATS RECIBIDOS:",
+    data?.stats,
+  );
 
   return withArtistMediaUrls(data);
 }

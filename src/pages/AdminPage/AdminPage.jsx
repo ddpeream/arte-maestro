@@ -54,7 +54,7 @@ function AdminPage() {
   // Restaura un artista previamente archivado.
   const restoreArtistMutation = useRestoreArtistMutation();
 
-  // Cierra el formulario y limpia el artista en edición.
+  // Cierra el modal y limpia el artista seleccionado.
   function closeArtistModal() {
     setModalOpen(false);
     setEditingArtist(null);
@@ -73,7 +73,7 @@ function AdminPage() {
     }
   }
 
-  // Actualiza la información base de un artista existente.
+  // Actualiza un artista existente.
   async function handleUpdateArtist(id, changes) {
     try {
       await updateArtistMutation.mutateAsync({
@@ -95,7 +95,7 @@ function AdminPage() {
     setModalOpen(true);
   }
 
-  // Trae la ficha completa y abre el formulario para editar el artista.
+  // Trae la ficha completa y abre el formulario.
   async function handleEditArtist(artist) {
     try {
       const fullArtist = await queryClient.fetchQuery(
@@ -106,6 +106,29 @@ function AdminPage() {
       setModalOpen(true);
     } catch {
       setNotice(`No fue posible cargar "${artist.name}" para edición.`);
+    }
+  }
+
+  // Recarga la ficha completa del artista abierto.
+  // Se usa cuando cambia una sección relacionada,
+  // por ejemplo artist_stats.
+  async function refreshEditingArtist() {
+    if (!editingArtist?.id) {
+      return;
+    }
+
+    try {
+      await queryClient.invalidateQueries({
+        queryKey: ["artists", "admin", "detail", editingArtist.id],
+      });
+
+      const fullArtist = await queryClient.fetchQuery(
+        adminArtistByIdQueryOptions(editingArtist.id),
+      );
+
+      setEditingArtist(fullArtist);
+    } catch {
+      setNotice("No fue posible refrescar la información del artista.");
     }
   }
 
@@ -189,6 +212,7 @@ function AdminPage() {
           onClose={closeArtistModal}
           onCreate={handleCreateArtist}
           onUpdate={handleUpdateArtist}
+          onRefreshArtist={refreshEditingArtist}
           isLoading={
             createArtistMutation.isPending || updateArtistMutation.isPending
           }

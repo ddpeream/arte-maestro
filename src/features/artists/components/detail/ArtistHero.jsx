@@ -8,12 +8,17 @@ function ArtistHero({ artist }) {
   const hasEmails =
     Array.isArray(artist.contact?.emails) && artist.contact.emails.length > 0;
 
+  // Prioridad:
+  // 1. Hero persistida en Supabase.
+  // 2. Hero local/hardcodeada durante la transición.
+  const heroImage = artist.hero_url || artist.heroImage || "";
+
   return (
     <section className="artist-profile__hero">
-      {artist.heroImage && (
+      {heroImage && (
         <img
           className="artist-profile__hero-image"
-          src={artist.heroImage}
+          src={heroImage}
           alt={artist.name}
           fetchPriority="high"
         />
