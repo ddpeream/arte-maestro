@@ -31,6 +31,11 @@ function ArtistSidebar({ artist, slug }) {
       visible: artist.videoClips?.length > 0,
     },
     {
+      id: "galeria",
+      label: "Galería",
+      visible: Array.isArray(artist.gallery) && artist.gallery.length > 0,
+    },
+    {
       id: "crew",
       label: "Crew",
       visible: artist.crew?.length > 0,

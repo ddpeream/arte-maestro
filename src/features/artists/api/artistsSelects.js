@@ -139,6 +139,48 @@ export const ARTIST_DETAIL_SELECT = `
       external_provider,
       external_url
     )
+  ),
+
+  videos:artist_videos!artist_videos_artist_id_fkey (
+    id,
+    category,
+    title,
+    meta,
+    media_asset_id,
+    sort_order,
+    publication_status,
+
+    media_asset:media_assets!artist_videos_media_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      title,
+      external_provider,
+      external_id,
+      external_url
+    )
+  ),
+
+    gallery:artist_gallery!artist_gallery_artist_id_fkey (
+    id,
+    media_asset_id,
+    caption,
+    sort_order,
+    publication_status,
+
+    media_asset:media_assets!artist_gallery_media_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      title,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
   )
 `;
 
@@ -280,6 +322,48 @@ export const ARTIST_ADMIN_DETAIL_SELECT = `
       kind,
       source_type,
       status,
+      alt_text,
+      storage_bucket,
+      storage_path,
+      external_provider,
+      external_url
+    )
+  ),
+
+  videos:artist_videos!artist_videos_artist_id_fkey (
+    id,
+    category,
+    title,
+    meta,
+    media_asset_id,
+    sort_order,
+    publication_status,
+
+    media_asset:media_assets!artist_videos_media_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      title,
+      external_provider,
+      external_id,
+      external_url
+    )
+  ),
+
+    gallery:artist_gallery!artist_gallery_artist_id_fkey (
+    id,
+    media_asset_id,
+    caption,
+    sort_order,
+    publication_status,
+
+    media_asset:media_assets!artist_gallery_media_asset_id_fkey (
+      id,
+      kind,
+      source_type,
+      status,
+      title,
       alt_text,
       storage_bucket,
       storage_path,

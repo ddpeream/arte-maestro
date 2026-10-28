@@ -43,6 +43,41 @@ function withArtistMediaUrls(artist) {
         }))
     : [];
 
+    const videos = Array.isArray(artist.videos)
+      ? [...artist.videos]
+          .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+          .map((video) => {
+            const youtubeId = video.media_asset?.external_id ?? "";
+
+            return {
+              ...video,
+
+              youtube_id: youtubeId,
+
+              thumbnail: youtubeId
+                ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`
+                : "",
+            };
+          })
+      : [];
+
+      const gallery = Array.isArray(artist.gallery)
+        ? [...artist.gallery]
+            .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+            .map((item) => ({
+              ...item,
+
+              image_url: item.media_asset
+                ? getMediaAssetPublicUrl(item.media_asset)
+                : "",
+
+              // Alias sencillo para la vista pública.
+              image: item.media_asset
+                ? getMediaAssetPublicUrl(item.media_asset)
+                : "",
+            }))
+        : [];
+
   return {
     ...artist,
 
@@ -90,6 +125,32 @@ function withArtistMediaUrls(artist) {
       url: release.url,
       cover: release.cover_url,
     })),
+
+    liveVideos: videos
+      .filter((video) => video.category === "live")
+      .map((video) => ({
+        id: video.id,
+        type: "video",
+        source: "youtube",
+        title: video.title,
+        meta: video.meta ?? "",
+        youtubeId: video.youtube_id,
+        thumbnail: video.thumbnail,
+      })),
+
+    videoClips: videos
+      .filter((video) => video.category === "clip")
+      .map((video) => ({
+        id: video.id,
+        type: "video",
+        source: "youtube",
+        title: video.title,
+        meta: video.meta ?? "",
+        youtubeId: video.youtube_id,
+        thumbnail: video.thumbnail,
+      })),
+
+    gallery,
   };
 }
 
@@ -201,6 +262,8 @@ export async function getPublishedArtistBySlug(slug) {
     .eq("stats.publication_status", "published")
     .eq("members.publication_status", "published")
     .eq("releases.publication_status", "published")
+    .eq("videos.publication_status", "published")
+    .eq("gallery.publication_status", "published")
     .maybeSingle();
 
   if (error) {

@@ -12,6 +12,7 @@ import ArtistDiscography from "../../features/artists/components/detail/ArtistDi
 import ArtistCrew from "../../features/artists/components/detail/ArtistCrew";
 import ArtistPress from "../../features/artists/components/detail/ArtistPress";
 import ArtistContact from "../../features/artists/components/detail/ArtistContact";
+import ArtistGallery from "../../features/artists/components/detail/ArtistGallery";
 
 // import { artists as LocalArtists } from "../../features/artists/data/artists";
 
@@ -78,6 +79,8 @@ function ArtistDetailPage() {
             videos={artist.videoClips ?? []}
             type="clips"
           />
+
+          <ArtistGallery artist={artist} gallery={artist.gallery ?? []} />
 
           <ArtistCrew crew={artist.crew ?? []} />
 

@@ -5,6 +5,8 @@ import ArtistImagePicker from "./ArtistImagePicker";
 import ArtistStatsEditor from "./ArtistStatsEditor";
 import ArtistMembersEditor from "./ArtistMembersEditor";
 import ArtistReleasesEditor from "./ArtistReleasesEditor";
+import ArtistVideosEditor from "./ArtistVideosEditor";
+import ArtistGalleryEditor from "./ArtistGalleryEditor";
 import { SLUG_REGEX, getArtistFormValues, slugify } from "../../utils/artistFormUtils";
 
 // Presenta el formulario para crear o editar artistas.
@@ -412,6 +414,18 @@ function ArtistModal({
               <ArtistReleasesEditor
                 artistId={artist.id}
                 releases={artist.releases ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistVideosEditor
+                artistId={artist.id}
+                videos={artist.videos ?? []}
+                onChanged={onRefreshArtist}
+              />
+
+              <ArtistGalleryEditor
+                artistId={artist.id}
+                gallery={artist.gallery ?? []}
                 onChanged={onRefreshArtist}
               />
             </>
