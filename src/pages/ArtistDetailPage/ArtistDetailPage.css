@@ -2,4 +2,5 @@
 
 @import "../../features/artists/styles/ArtistProfileLayout.css";
 @import "../../features/artists/styles/ArtistProfileContent.css";
+@import "../../features/artists/styles/ArtistProfileSocial.css";
 @import "../../features/artists/styles/ArtistProfileContact.css";

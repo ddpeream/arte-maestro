@@ -1,38 +1,29 @@
-import { Link } from "react-router";
-import { Mail, Music2, Globe, Cloud } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
-import SocialIcon from "../../../../components/media/SocialIcon/SocialIcon";
 import FanSubscriptionForm from "../../../../components/forms/FanSubscriptionForm/FanSubscriptionForm";
 
-const platformLabels = {
-  instagram: "Instagram",
-  facebook: "Facebook",
-  youtube: "YouTube",
-  spotify: "Spotify",
-  appleMusic: "Apple Music",
-  soundcloud: "SoundCloud",
-  tiktok: "TikTok",
-  website: "Sitio web",
-};
-
-const platformIcons = {
-  spotify: Music2,
-  appleMusic: Music2,
-  soundcloud: Cloud,
-  tiktok: Music2,
-  website: Globe,
-};
-
-// Presenta redes, booking y formulario de contacto.
+// Presenta booking, contactos profesionales y formulario del artista.
 function ArtistContact({ artist }) {
-  const image = artist.featuredImage || artist.heroImage;
+  const emails = Array.isArray(artist.contact?.emails)
+    ? artist.contact.emails
+    : [];
 
-  const socialLinks = Object.entries(artist.platforms || {}).filter(
-    ([, url]) => typeof url === "string" && /^https?:\/\//i.test(url),
-  );
+  const phones = Array.isArray(artist.contact?.phones)
+    ? artist.contact.phones
+    : [];
 
-  const hasEmails =
-    Array.isArray(artist.contact?.emails) && artist.contact.emails.length > 0;
+  const primaryEmail = artist.contact?.primaryEmail ?? "";
+
+  const primaryPhone = artist.contact?.primaryPhone ?? "";
+
+  const hasProfessionalContact = emails.length > 0 || phones.length > 0;
+
+  const artistImage =
+    artist.featured_url ||
+    artist.featuredImage ||
+    artist.hero_url ||
+    artist.heroImage ||
+    "";
 
   return (
     <section
@@ -45,69 +36,49 @@ function ArtistContact({ artist }) {
           className="artist-contact__artist"
           aria-label={`Información de ${artist.name}`}
         >
-          {image && (
+          {artistImage && (
             <img
               className="artist-contact__photo"
-              src={image}
+              src={artistImage}
               alt={artist.name}
               loading="lazy"
             />
           )}
 
           <h3 className="artist-contact__name">
-            {image && (
+            {artistImage && (
               <img
                 className="artist-contact__avatar"
-                src={image}
+                src={artistImage}
                 alt=""
                 loading="lazy"
               />
             )}
+
             {artist.name}
           </h3>
 
-          {socialLinks.length > 0 && (
-            <nav
-              className="artist-contact__social"
-              aria-label={`Redes y plataformas de ${artist.name}`}
-            >
-              {socialLinks.map(([platform, url]) => {
-                const Icon = platformIcons[platform] || Globe;
-
-                return (
-                  <a
-                    key={platform}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {["instagram", "facebook", "youtube"].includes(platform) ? (
-                      <SocialIcon
-                        platform={platform}
-                        size={20}
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <Icon size={20} aria-hidden="true" />
-                    )}
-
-                    {platformLabels[platform] || platform}
-                  </a>
-                );
-              })}
-            </nav>
-          )}
-
-          {hasEmails && (
+          {hasProfessionalContact && (
             <div id="artist-booking" className="artist-contact__booking">
               <span>Booking · Prensa · Industria</span>
 
-              <Link to="/tienda">Ir a la tienda y cotizar →</Link>
-
-              {artist.contact.emails.map((email) => (
+              {emails.map((email) => (
                 <a key={email} href={`mailto:${email}`}>
                   <Mail size={16} aria-hidden="true" />
-                  {email}
+
+                  <span>{email}</span>
+
+                  {email === primaryEmail && <small>Principal</small>}
+                </a>
+              ))}
+
+              {phones.map((phone) => (
+                <a key={phone} href={`tel:${phone}`}>
+                  <Phone size={16} aria-hidden="true" />
+
+                  <span>{phone}</span>
+
+                  {phone === primaryPhone && <small>Principal</small>}
                 </a>
               ))}
             </div>

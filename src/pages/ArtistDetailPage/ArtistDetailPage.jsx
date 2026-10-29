@@ -13,6 +13,7 @@ import ArtistCrew from "../../features/artists/components/detail/ArtistCrew";
 import ArtistPress from "../../features/artists/components/detail/ArtistPress";
 import ArtistContact from "../../features/artists/components/detail/ArtistContact";
 import ArtistGallery from "../../features/artists/components/detail/ArtistGallery";
+import ArtistSocialLinks from "../../features/artists/components/detail/ArtistSocialLinks";
 
 // import { artists as LocalArtists } from "../../features/artists/data/artists";
 
@@ -85,6 +86,8 @@ function ArtistDetailPage() {
           <ArtistCrew crew={artist.crew ?? []} />
 
           <ArtistPress press={artist.press ?? []} />
+
+          <ArtistSocialLinks artist={artist} />
 
           <ArtistContact artist={artist} />
         </div>

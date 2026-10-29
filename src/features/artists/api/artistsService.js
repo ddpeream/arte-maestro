@@ -137,21 +137,35 @@ function withArtistMediaUrls(artist) {
         )
       : [];
 
-    const emails = contacts
-      .filter((contact) => contact.kind === "email")
-      .map((contact) => contact.value);
+    const emailContacts = contacts.filter(
+      (contact) => contact.kind === "email",
+    );
 
-    const phones = contacts
-      .filter((contact) => contact.kind === "phone")
-      .map((contact) => contact.value);
+    const phoneContacts = contacts.filter(
+      (contact) => contact.kind === "phone",
+    );
 
     const primaryEmail =
-      contacts.find((contact) => contact.kind === "email" && contact.is_primary)
-        ?.value ?? "";
+      emailContacts.find((contact) => contact.is_primary)?.value ?? "";
 
     const primaryPhone =
-      contacts.find((contact) => contact.kind === "phone" && contact.is_primary)
-        ?.value ?? "";
+      phoneContacts.find((contact) => contact.is_primary)?.value ?? "";
+
+    const emails = [
+      primaryEmail,
+
+      ...emailContacts
+        .filter((contact) => contact.value !== primaryEmail)
+        .map((contact) => contact.value),
+    ].filter(Boolean);
+
+    const phones = [
+      primaryPhone,
+
+      ...phoneContacts
+        .filter((contact) => contact.value !== primaryPhone)
+        .map((contact) => contact.value),
+    ].filter(Boolean);
 
   return {
     ...artist,

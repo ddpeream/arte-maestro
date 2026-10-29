@@ -46,6 +46,13 @@ function ArtistSidebar({ artist, slug }) {
       visible: artist.press?.length > 0,
     },
     {
+      id: "redes",
+      label: "Redes",
+      visible: Object.values(artist.platforms ?? {}).some(
+        (url) => typeof url === "string" && /^https?:\/\//i.test(url),
+      ),
+    },
+    {
       id: "contacto",
       label: "Contacto",
       visible: Boolean(artist.id),
