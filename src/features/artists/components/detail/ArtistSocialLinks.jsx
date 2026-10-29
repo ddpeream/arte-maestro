@@ -62,9 +62,21 @@ const platformConfig = {
 
 // Presenta las redes sociales y plataformas oficiales del artista.
 function ArtistSocialLinks({ artist }) {
-  const links = Object.entries(artist.platforms ?? {}).filter(
-    ([, url]) => typeof url === "string" && /^https?:\/\//i.test(url),
-  );
+  const SOCIAL_PRIORITY = {
+    instagram: 1,
+    facebook: 2,
+    tiktok: 3,
+  };
+
+  const links = Object.entries(artist.platforms ?? {})
+    .filter(([, url]) => typeof url === "string" && /^https?:\/\//i.test(url))
+    .sort(([platformA], [platformB]) => {
+      const priorityA = SOCIAL_PRIORITY[platformA] ?? 100;
+
+      const priorityB = SOCIAL_PRIORITY[platformB] ?? 100;
+
+      return priorityA - priorityB;
+    });
 
   if (links.length === 0) {
     return null;
